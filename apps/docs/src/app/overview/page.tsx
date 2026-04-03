@@ -64,7 +64,7 @@ function DashboardMock() {
 function StaticHeroDemo() {
   return (
     <BrowserMockup url="localhost:3000">
-      <div className="grid grid-cols-2 gap-3 text-[11px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
         {/* Real UI column */}
         <div>
           <div className="text-[10px] font-medium text-stone-400 uppercase tracking-wide mb-2">Real UI</div>
