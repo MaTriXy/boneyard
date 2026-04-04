@@ -2,6 +2,33 @@ import { useRef, useState, useEffect, type ReactNode } from 'react'
 import { snapshotBones } from './extract.js'
 import type { Bone, SkeletonResult, ResponsiveBones, SnapshotConfig } from './types.js'
 
+// ── Global defaults ─────────────────────────────────────────────────────────
+interface BoneyardConfig {
+  color?: string
+  darkColor?: string
+  animate?: boolean
+}
+
+let globalConfig: BoneyardConfig = {}
+
+/**
+ * Set global defaults for all `<Skeleton>` components.
+ * Individual props override these defaults.
+ *
+ * ```ts
+ * import { configureBoneyard } from 'boneyard-js/react'
+ *
+ * configureBoneyard({
+ *   color: '#e5e5e5',
+ *   darkColor: 'rgba(255,255,255,0.08)',
+ *   animate: true,
+ * })
+ * ```
+ */
+export function configureBoneyard(config: BoneyardConfig): void {
+  globalConfig = { ...globalConfig, ...config }
+}
+
 // ── Bones registry ──────────────────────────────────────────────────────────
 const bonesRegistry = new Map<string, SkeletonResult | ResponsiveBones>()
 
@@ -113,7 +140,7 @@ export function Skeleton({
   initialBones,
   color,
   darkColor,
-  animate = true,
+  animate,
   className,
   fallback,
   fixture,
@@ -148,7 +175,10 @@ export function Skeleton({
     }
   }, [])
 
-  const resolvedColor = isDark ? (darkColor ?? 'rgba(255,255,255,0.06)') : (color ?? 'rgba(0,0,0,0.08)')
+  const effectiveColor = color ?? globalConfig.color ?? 'rgba(0,0,0,0.08)'
+  const effectiveDarkColor = darkColor ?? globalConfig.darkColor ?? 'rgba(255,255,255,0.06)'
+  const resolvedColor = isDark ? effectiveDarkColor : effectiveColor
+  const shouldAnimate = animate ?? globalConfig.animate ?? true
 
   // Track container width for responsive breakpoint selection
   useEffect(() => {
@@ -220,11 +250,11 @@ export function Skeleton({
                   height: b.h * scaleY,
                   borderRadius: typeof b.r === 'string' ? b.r : `${b.r}px`,
                   backgroundColor: b.c ? adjustColor(resolvedColor, isDark ? 0.03 : 0.45) : resolvedColor,
-                  animation: animate ? 'boneyard-pulse 1.8s ease-in-out infinite' : undefined,
+                  animation: shouldAnimate ? 'boneyard-pulse 1.8s ease-in-out infinite' : undefined,
                 }}
               />
             ))}
-            {animate && (
+            {shouldAnimate && (
               <style>{`@keyframes boneyard-pulse{0%,100%{background-color:${resolvedColor}}50%{background-color:${adjustColor(resolvedColor, isDark ? 0.04 : 0.3)}}}`}</style>
             )}
           </div>

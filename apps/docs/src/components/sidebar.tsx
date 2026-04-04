@@ -12,16 +12,17 @@ import { XIcon, type XIconHandle } from "@/components/ui/icons/x";
 
 const navItems = [
   { href: "/overview", label: "Overview" },
+  { href: "/how-it-works", label: "How it works" },
   { href: "/install", label: "Install" },
   { href: "/features", label: "Features" },
+  { href: "/responsive", label: "Responsive" },
+  { href: "/ssr", label: "SSR" },
   { href: "/output", label: "Output" },
 ];
 
 const exampleItems = [
   { href: "/demo", label: "Complex Example" },
   { href: "/try-it", label: "Examples" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/ssr", label: "SSR" },
   { href: "/agent", label: "Agent" },
 ];
 

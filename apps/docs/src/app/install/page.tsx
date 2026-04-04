@@ -6,7 +6,7 @@ export default function InstallPage() {
       <div>
         <h1 className="text-[28px] font-bold tracking-tight mb-2">Getting Started</h1>
         <p className="text-[15px] text-[#78716c] leading-relaxed">
-          Add skeleton loading screens to any React app in under 5 minutes. No config files, no build plugins.
+          Add skeleton loading screens to any React app in under 5 minutes.
         </p>
       </div>
 
@@ -182,6 +182,7 @@ export default function InstallPage() {
           <div className="text-stone-400 pl-8">└── components/</div>
           <div className="text-stone-400 pl-12">├── BlogCard.tsx</div>
           <div className="text-stone-400 pl-12">└── Dashboard.tsx</div>
+          <div className="text-stone-400 pl-4">├── boneyard.config.json <span className="text-stone-600">← optional CLI defaults</span></div>
           <div className="text-stone-400 pl-4">├── package.json</div>
           <div className="text-stone-400 pl-4">└── node_modules/</div>
           <div className="text-stone-500 pl-8">└── boneyard/</div>
@@ -210,8 +211,13 @@ export default function InstallPage() {
           </div>
 
           <div>
-            <p className="text-[12px] text-stone-400 mb-1.5">Custom breakpoints + output directory</p>
-            <CodeBlock language="bash" code="npx boneyard-js build --breakpoints 390,820,1440 --out ./public/bones" />
+            <p className="text-[12px] text-stone-400 mb-1.5">Config file (build + runtime defaults)</p>
+            <CodeBlock filename="boneyard.config.json" language="json" code={`{
+  <span class="text-[#93c5fd]">"breakpoints"</span>: [<span class="text-[#fbbf24]">390</span>, <span class="text-[#fbbf24]">820</span>, <span class="text-[#fbbf24]">1440</span>],
+  <span class="text-[#93c5fd]">"out"</span>: <span class="text-[#86efac]">"./src/bones"</span>,
+  <span class="text-[#93c5fd]">"color"</span>: <span class="text-[#86efac]">"#e5e5e5"</span>,
+  <span class="text-[#93c5fd]">"animate"</span>: <span class="text-[#fbbf24]">true</span>
+}`} />
           </div>
         </div>
       </section>

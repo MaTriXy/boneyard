@@ -260,6 +260,63 @@ npx boneyard-js build --breakpoints 390,820,1440 --out ./public/bones`} />
           </p>
         </div>
       </section>
+
+      {/* ── Config file ── */}
+      <section>
+        <div className="section-divider">
+          <span>Config file</span>
+        </div>
+        <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-4">
+          Create a <code className="text-[12px] bg-stone-100 px-1.5 py-0.5 rounded">boneyard.config.json</code> in
+          your project root. It controls both the CLI build and the runtime defaults for all{" "}
+          <code className="text-[12px] bg-stone-100 px-1.5 py-0.5 rounded">&lt;Skeleton&gt;</code> components.
+          Per-component props and CLI flags always override these values.
+        </p>
+        <CodeBlock
+          filename="boneyard.config.json"
+          language="json"
+          code={`{
+  <span class="text-stone-500">// Build options</span>
+  <span class="text-[#93c5fd]">"breakpoints"</span>: [<span class="text-[#fbbf24]">375</span>, <span class="text-[#fbbf24]">640</span>, <span class="text-[#fbbf24]">768</span>, <span class="text-[#fbbf24]">1024</span>, <span class="text-[#fbbf24]">1280</span>, <span class="text-[#fbbf24]">1536</span>],
+  <span class="text-[#93c5fd]">"out"</span>: <span class="text-[#86efac]">"./src/bones"</span>,
+  <span class="text-[#93c5fd]">"wait"</span>: <span class="text-[#fbbf24]">800</span>,
+
+  <span class="text-stone-500">// Runtime defaults (applied to all skeletons)</span>
+  <span class="text-[#93c5fd]">"color"</span>: <span class="text-[#86efac]">"#e5e5e5"</span>,
+  <span class="text-[#93c5fd]">"darkColor"</span>: <span class="text-[#86efac]">"rgba(255,255,255,0.08)"</span>,
+  <span class="text-[#93c5fd]">"animate"</span>: <span class="text-[#fbbf24]">true</span>
+}`}
+        />
+        <p className="text-[13px] text-stone-400 mt-2 mb-4">
+          Runtime defaults are automatically included in the generated{" "}
+          <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">registry.js</code> — no extra imports or function calls needed.
+        </p>
+        <div className="mt-4 divide-y divide-stone-100">
+          <PropItem name="breakpoints" type="number[]" defaultValue="auto-detected">
+            Viewport widths to capture at. If omitted, Tailwind breakpoints are auto-detected (375, 640, 768, 1024, 1280, 1536). Falls back to 375, 768, 1280 without Tailwind.
+          </PropItem>
+          <PropItem name="out" type="string" defaultValue="./src/bones">
+            Output directory for <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">.bones.json</code> files and the generated registry.
+          </PropItem>
+          <PropItem name="wait" type="number" defaultValue="800">
+            Milliseconds to wait after page load before capturing.
+          </PropItem>
+          <PropItem name="color" type="string" defaultValue="rgba(0,0,0,0.08)">
+            Default bone color for light mode.
+          </PropItem>
+          <PropItem name="darkColor" type="string" defaultValue="rgba(255,255,255,0.06)">
+            Default bone color for dark mode.
+          </PropItem>
+          <PropItem name="animate" type="boolean" defaultValue="true">
+            Default pulse animation setting.
+          </PropItem>
+        </div>
+        <div className="border-l-2 border-stone-300 pl-4 py-1 mt-4">
+          <p className="text-[13px] text-[#78716c]">
+            Priority: per-component prop → global defaults → built-in defaults.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

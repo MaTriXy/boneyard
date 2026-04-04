@@ -185,10 +185,35 @@ If your app requires authentication:
 - **React portals**: Elements outside the snapshot root aren't captured
 - **Viewport vs container**: Breakpoints are based on viewport width, not container width
 
+## Responsive
+
+The CLI captures bones at multiple breakpoints (default: 375, 768, 1280). At runtime, \`<Skeleton>\` uses ResizeObserver to pick the closest match. Bones store \`x\` and \`w\` as percentages so they scale within a breakpoint range.
+
+Custom breakpoints: \`npx boneyard-js build --breakpoints 390,820,1440\`
+
+Tailwind breakpoints are auto-detected from your config.
+
+## Config file
+
+Create \`boneyard.config.json\` in your project root. Controls both the CLI build and runtime defaults for all \`<Skeleton>\` components:
+
+\`\`\`json
+{
+  "breakpoints": [375, 640, 768, 1024, 1280, 1536],
+  "out": "./src/bones",
+  "wait": 800,
+  "color": "#e5e5e5",
+  "darkColor": "rgba(255,255,255,0.08)",
+  "animate": true
+}
+\`\`\`
+
+Runtime defaults (\`color\`, \`darkColor\`, \`animate\`) are automatically included in the generated \`registry.js\`. Per-component props and CLI flags override config values.
+
 ## Package exports
 
 - \`boneyard-js\` — snapshotBones, renderBones, fromElement
-- \`boneyard-js/react\` — Skeleton, registerBones
+- \`boneyard-js/react\` — Skeleton, registerBones, configureBoneyard
 `;
 
 export default function AgentPage() {
