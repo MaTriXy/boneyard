@@ -94,15 +94,12 @@ if (!cliSetWait && typeof config.wait === 'number') {
 // Resolve env vars in auth config
 if (config.resolveEnvVars && config.auth) {
   if (config.auth.cookies) {
-    console.log(`  \x1b[2mLoading ${config.auth.cookies.length} cookie(s) from config\x1b[0m`)
     config.auth.cookies = config.auth.cookies.map(c => ({
       ...c,
       value: replaceEnvStrings(c.value)
     }))
   }
   if (config.auth.headers) {
-    const headerCount = Object.keys(config.auth.headers).length
-    console.log(`  \x1b[2mLoading ${headerCount} header(s) from config\x1b[0m`)
     for (const [key, val] of Object.entries(config.auth.headers)) {
       config.auth.headers[key] = replaceEnvStrings(val)
     }
@@ -303,8 +300,8 @@ if (config.auth) {
     await page.context().addCookies(config.auth.cookies)
   }
   if (config.auth.headers) {
-    const headerCount = Object.keys(config.auth.headers).length
-    console.log(`  \x1b[2mApplying ${headerCount} header(s) to browser session\x1b[0m`)
+    const count = Object.keys(config.auth.headers).length
+    console.log(`  \x1b[2mApplying ${count} header(s) to browser session\x1b[0m`)
     await page.setExtraHTTPHeaders(config.auth.headers)
   }
 }
