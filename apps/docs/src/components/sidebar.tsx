@@ -12,8 +12,11 @@ import { XIcon, type XIconHandle } from "@/components/ui/icons/x";
 
 const navItems = [
   { href: "/overview", label: "Overview" },
+  { href: "/how-it-works", label: "How it works" },
   { href: "/install", label: "Install" },
   { href: "/features", label: "Features" },
+  { href: "/responsive", label: "Responsive" },
+  { href: "/ssr", label: "SSR" },
   { href: "/output", label: "Output" },
   { href: "/react-native", label: "React Native" },
 ];
@@ -21,9 +24,8 @@ const navItems = [
 const exampleItems = [
   { href: "/demo", label: "Complex Example" },
   { href: "/try-it", label: "Examples" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/ssr", label: "SSR" },
   { href: "/agent", label: "Agent" },
+  { href: "/changelog", label: "Changelog" },
 ];
 
 const externalLinks = [
@@ -45,8 +47,8 @@ export function Sidebar() {
           href={item.href}
           onClick={onClick}
           className={`relative block py-1.5 text-[14px] transition-colors ${isActive
-              ? "text-[#1c1917] font-semibold"
-              : "text-[#a8a29e] hover:text-[#78716c]"
+            ? "text-[#1c1917] font-semibold"
+            : "text-[#a8a29e] hover:text-[#78716c]"
             }`}
         >
           {isActive && (
@@ -61,7 +63,7 @@ export function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="pt-12 md:pt-16 pb-8">
+      <div className="pt-12 md:pt-30 pb-8">
         <Link href="/overview">
           <Logo />
         </Link>
