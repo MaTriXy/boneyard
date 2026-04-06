@@ -30,6 +30,10 @@
     "./native": {
       "types": "./dist/native.d.ts",
       "default": "./dist/native.tsx"
+    },
+    "./native-scan": {
+      "types": "./dist/native-scan.d.ts",
+      "default": "./dist/native-scan.tsx"
     }
   },
   "typesVersions": {
@@ -55,12 +59,16 @@
     "dist",
     "bin",
     "native.js",
-    "native.d.ts"
+    "native.d.ts",
+    "native-scan.js",
+    "native-scan.d.ts",
+    "native-scan.js",
+    "native-scan.d.ts"
   ],
   "scripts": {
     "build": "tsc && npm run copy-svelte && npm run copy-native",
     "copy-svelte": "cp src/Skeleton.svelte dist/Skeleton.svelte && cp src/svelte.d.ts dist/svelte.d.ts",
-    "copy-native": "cp src/native.tsx dist/native.tsx && cp src/react-native.tsx dist/react-native.tsx",
+    "copy-native": "cp src/native.tsx dist/native.tsx && cp src/react-native.tsx dist/react-native.tsx && cp src/native-scan.tsx dist/native-scan.tsx",
     "benchmark": "bun run scripts/benchmark-layout.ts",
     "test": "bun test",
     "prepublishOnly": "npm run build"

@@ -51,12 +51,54 @@ export default function ReactNativePage() {
           <span>3. Generate or create bones</span>
         </div>
         <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-4">
-          You have two options for getting bone data into your React Native app:
+          Three ways to get bone data into your React Native app:
         </p>
 
         <div className="space-y-6">
           <div>
-            <p className="text-[13px] font-medium text-stone-700 mb-2">Option A: Generate from Expo web (recommended)</p>
+            <p className="text-[13px] font-medium text-stone-700 mb-2">Option A: Scan from your running app (recommended)</p>
+            <p className="text-[14px] text-[#78716c] leading-relaxed mb-3">
+              The same <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">{'<Skeleton>'}</code> component you
+              use in production auto-scans in dev mode — no extra wrappers needed. Just run the CLI
+              with <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">--native</code> and open your app.
+            </p>
+            <CodeBlock language="tsx" code={`<span class="text-stone-500">// Same component you use in production — nothing extra to add</span>
+<span class="text-[#c084fc]">import</span> { Skeleton } <span class="text-[#c084fc]">from</span> <span class="text-[#86efac]">'boneyard-js/native'</span>
+
+<span class="text-[#c084fc]">function</span> <span class="text-[#fde68a]">ProfileScreen</span>() {
+  <span class="text-[#c084fc]">const</span> [loading, setLoading] = <span class="text-[#fde68a]">useState</span>(<span class="text-[#fbbf24]">true</span>)
+  <span class="text-[#c084fc]">return</span> (
+    &lt;<span class="text-[#fde68a]">Skeleton</span> <span class="text-[#93c5fd]">name</span>=<span class="text-[#86efac]">"profile-card"</span> <span class="text-[#93c5fd]">loading</span>={loading}&gt;
+      &lt;<span class="text-[#fde68a]">ProfileCard</span> /&gt;
+    &lt;/<span class="text-[#fde68a]">Skeleton</span>&gt;
+  )
+}`} />
+            <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-3">
+              Then run the CLI and open your app:
+            </p>
+            <CodeBlock language="bash" code={`<span class="text-stone-500"># Start the bone capture listener</span>
+npx boneyard-js build --native --out ./bones
+
+<span class="text-stone-500"># Open your app on device or simulator</span>
+<span class="text-stone-500"># Bones are captured automatically — press Ctrl+C when done</span>`} />
+            <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-3">
+              The CLI writes <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">.bones.json</code> files and
+              a <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">registry.js</code> that imports
+              from <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyard-js/native</code> automatically.
+            </p>
+            <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 space-y-2">
+              <p className="text-[13px] font-medium text-stone-700">How it works</p>
+              <p className="text-[13px] text-[#78716c]">
+                In dev mode, every <code className="text-[12px] bg-white px-1 py-0.5 rounded border border-stone-200">{'<Skeleton name="...">'}</code> checks
+                if the CLI is listening on port 9999. If it is, the component walks the React fiber tree,
+                measures each native view&apos;s position, and sends the bone data to the CLI. This happens once
+                per named skeleton, 800ms after mount. In production builds this code is completely inactive.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[13px] font-medium text-stone-700 mb-2">Option B: Generate from Expo web</p>
             <p className="text-[14px] text-[#78716c] leading-relaxed mb-3">
               Expo apps support <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">--web</code> mode, which renders your React Native components in a browser
               via react-native-web. The boneyard CLI can snapshot those rendered components and generate <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">.bones.json</code> files
@@ -107,7 +149,7 @@ npx boneyard-js build http://localhost:8081 --out ./bones`} />
           </div>
 
           <div>
-            <p className="text-[13px] font-medium text-stone-700 mb-2">Option B: Copy from a web project</p>
+            <p className="text-[13px] font-medium text-stone-700 mb-2">Option C: Copy from a web project</p>
             <p className="text-[14px] text-[#78716c] leading-relaxed mb-3">
               If you already have a web version of your app (Next.js, Vite, etc.) with boneyard set up,
               just copy the <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">.bones.json</code> files.
@@ -117,7 +159,7 @@ npx boneyard-js build http://localhost:8081 --out ./bones`} />
           </div>
 
           <div>
-            <p className="text-[13px] font-medium text-stone-700 mb-2">Option C: Write bones by hand</p>
+            <p className="text-[13px] font-medium text-stone-700 mb-2">Option D: Write bones by hand</p>
             <p className="text-[14px] text-[#78716c] leading-relaxed mb-3">
               Create a <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">.bones.json</code> file manually.
               As of v1.6, bones are stored as compact tuples <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">[x, y, w, h, r, c?]</code> to
@@ -390,7 +432,7 @@ module.exports = config`} />
               <tr className="border-b border-stone-100">
                 <td className="px-4 py-2 text-stone-800">CLI build</td>
                 <td className="px-4 py-2">npx boneyard-js build</td>
-                <td className="px-4 py-2">Generate from web, or write by hand</td>
+                <td className="px-4 py-2">npx boneyard-js build --native</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 text-stone-800">Bone format</td>
