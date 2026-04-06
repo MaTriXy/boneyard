@@ -110,9 +110,13 @@ const pulseColor = computed(() =>
 
 function updateDarkMode() {
   if (typeof window === 'undefined') return
-  isDark.value =
-    document.documentElement.classList.contains('dark') ||
-    !!containerRef.value?.closest('.dark')
+  try {
+    isDark.value =
+      document.documentElement.classList.contains('dark') ||
+      !!containerRef.value?.closest('.dark')
+  } catch {
+    isDark.value = false
+  }
 }
 
 function sanitizeRadius(r: number | string): string {
