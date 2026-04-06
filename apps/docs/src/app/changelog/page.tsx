@@ -8,12 +8,56 @@ export default function ChangelogPage() {
         </p>
       </div>
 
+      {/* v1.6.4 */}
+      <section>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[14px] font-bold">v1.6.4</span>
+          <span className="text-[12px] text-stone-400">April 2026</span>
+          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Vue 3 adapter</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              New <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyard-js/vue</code> export
+              with a native Vue 3 Skeleton component. Pulse, shimmer, and solid animations with scoped keyframes,
+              dark mode auto-detection, and <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">#fixture</code> / <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">#fallback</code> slots.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Native device scanning</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">npx boneyard-js build --native</code> captures
+              bones directly from a running React Native app on device or simulator. Walks the React fiber tree,
+              measures views via UIManager, and sends bone data to the CLI automatically.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Security hardening</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              CLI scan server now validates skeleton names, sanitizes output filenames against path traversal,
+              and enforces a 5MB request body limit. Vue adapter sanitizes CSS radius values to prevent injection.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Docs restructure</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Framework-organized sidebar with dedicated pages for React, React Native, Svelte, and Vue.
+              New table of contents component and Svelte docs page.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* v1.6.3 */}
       <section>
         <div className="flex items-center gap-3 mb-4">
           <span className="text-[14px] font-bold">v1.6.3</span>
           <span className="text-[12px] text-stone-400">April 2026</span>
-          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
         </div>
 
         <div className="space-y-6">
