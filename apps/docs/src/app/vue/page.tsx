@@ -1,7 +1,19 @@
 import { CodeBlock } from "@/components/ui/code-block";
+import { TableOfContents } from "@/components/toc";
+
+const tocItems = [
+  { id: "quick-start", label: "Quick start" },
+  { id: "props", label: "Props" },
+  { id: "slots", label: "Slots" },
+  { id: "dark-mode", label: "Dark mode" },
+  { id: "animations", label: "Animations" },
+  { id: "global-defaults", label: "Global defaults" },
+  { id: "config-file", label: "Config file" },
+];
 
 export default function VuePage() {
   return (
+    <div className="flex gap-10">
     <div className="max-w-[720px] px-6 pt-14 pb-12 space-y-12">
       <div>
         <h1 className="text-[28px] font-bold tracking-tight mb-2">Vue</h1>
@@ -12,7 +24,7 @@ export default function VuePage() {
 
       {/* Quick start */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="quick-start">
           <span>Quick start</span>
         </div>
         <div className="mt-4 space-y-4">
@@ -59,7 +71,7 @@ export default function VuePage() {
 
       {/* Props */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="props">
           <span>Props</span>
         </div>
         <div className="mt-4 rounded-lg border border-stone-200 overflow-hidden">
@@ -128,7 +140,7 @@ export default function VuePage() {
 
       {/* Slots */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="slots">
           <span>Slots</span>
         </div>
         <div className="mt-4 rounded-lg border border-stone-200 overflow-hidden">
@@ -175,7 +187,7 @@ export default function VuePage() {
 
       {/* Dark mode */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="dark-mode">
           <span>Dark mode</span>
         </div>
         <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-4">
@@ -188,7 +200,7 @@ export default function VuePage() {
 
       {/* Animations */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="animations">
           <span>Animations</span>
         </div>
         <div className="mt-4 rounded-lg border border-stone-200 overflow-hidden">
@@ -230,7 +242,7 @@ export default function VuePage() {
 
       {/* Global defaults */}
       <section>
-        <div className="section-divider">
+        <div className="section-divider" id="global-defaults">
           <span>Global defaults</span>
         </div>
         <p className="text-[14px] text-[#78716c] leading-relaxed mt-4 mb-4">
@@ -248,6 +260,17 @@ export default function VuePage() {
         </p>
       </section>
 
+      {/* Config file */}
+      <section>
+        <div className="section-divider" id="config-file">
+          <span>Config file</span>
+        </div>
+        <p className="text-[14px] text-[#78716c] leading-relaxed mt-4">
+          See <a href="/install#config-file" className="text-stone-800 underline underline-offset-2">Install &rarr; Config file</a> for
+          the full <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyard.config.json</code> reference. Works with all frameworks.
+        </p>
+      </section>
+
       {/* Next steps */}
       <section>
         <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
@@ -255,10 +278,13 @@ export default function VuePage() {
           <ul className="text-[13px] text-[#78716c] space-y-1 list-disc pl-4">
             <li>See <a href="/install" className="text-stone-800 underline underline-offset-2">Getting Started</a> for the full web setup walkthrough</li>
             <li>See <a href="/output" className="text-stone-800 underline underline-offset-2">Output</a> to understand the .bones.json format</li>
-            <li>See <a href="/features" className="text-stone-800 underline underline-offset-2">React docs</a> for CLI flags and config file reference</li>
+            <li>See <a href="/features" className="text-stone-800 underline underline-offset-2">React docs</a> for full CLI flags reference</li>
           </ul>
         </div>
       </section>
+    </div>
+
+    <TableOfContents items={tocItems} />
     </div>
   );
 }

@@ -7,6 +7,7 @@ const tocItems = [
   { id: "props", label: "Props" },
   { id: "dark-mode", label: "Dark mode" },
   { id: "snippets", label: "Snippets" },
+  { id: "config-file", label: "Config file" },
 ];
 
 export default function SveltePage() {
@@ -187,6 +188,17 @@ export default function SveltePage() {
     <span class="text-[#fde68a]">&lt;Card</span> data={mockData} /&gt;
   {/snippet}
 <span class="text-[#fde68a]">&lt;/Skeleton&gt;</span>`} />
+        </section>
+
+        {/* Config file */}
+        <section>
+          <div className="section-divider" id="config-file">
+            <span>Config file</span>
+          </div>
+          <p className="text-[14px] text-[#78716c] leading-relaxed mt-4">
+            See <a href="/install#config-file" className="text-stone-800 underline underline-offset-2">Install &rarr; Config file</a> for
+            the full <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyard.config.json</code> reference. Works with all frameworks.
+          </p>
         </section>
       </div>
 
