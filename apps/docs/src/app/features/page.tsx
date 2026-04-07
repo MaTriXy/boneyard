@@ -6,6 +6,7 @@ const tocItems = [
   { id: "skeleton-props", label: "<Skeleton> props" },
   { id: "hiding-elements", label: "Hiding elements" },
   { id: "build-command", label: "Build command" },
+  { id: "vite-plugin", label: "Vite plugin" },
   { id: "config-file", label: "Config file" },
 ];
 
@@ -322,6 +323,57 @@ npx boneyard-js build --force
 
 <span class="text-stone-500"># Watch mode — re-captures when your app changes</span>
 npx boneyard-js build --watch`} />
+        </div>
+
+        <div className="mt-6" id="vite-plugin">
+          <p className="text-[13px] font-semibold text-stone-700 mb-3">Vite plugin</p>
+          <p className="text-[13px] text-[#78716c] mb-3">
+            For Vite-based projects, use the plugin instead of the CLI — no second terminal needed.
+            Bones are captured on dev server start and re-captured automatically on every HMR update.
+          </p>
+          <CodeBlock filename="vite.config.ts" language="ts" code={`<span class="text-[#c084fc]">import</span> { boneyardPlugin } <span class="text-[#c084fc]">from</span> <span class="text-[#86efac]">'boneyard-js/vite'</span>
+
+<span class="text-[#c084fc]">export default</span> <span class="text-[#fde68a]">defineConfig</span>({
+  <span class="text-[#93c5fd]">plugins</span>: [<span class="text-[#fde68a]">boneyardPlugin</span>()]
+})`} />
+          <div className="mt-3 rounded-lg border border-stone-200 overflow-hidden">
+            <table className="w-full text-[13px]">
+              <thead>
+                <tr className="bg-stone-50 border-b border-stone-200">
+                  <th className="text-left px-4 py-2 font-medium text-stone-700">Option</th>
+                  <th className="text-left px-4 py-2 font-medium text-stone-700">Default</th>
+                  <th className="text-left px-4 py-2 font-medium text-stone-700">Description</th>
+                </tr>
+              </thead>
+              <tbody className="text-[#78716c]">
+                <tr className="border-b border-stone-100">
+                  <td className="px-4 py-2 font-mono text-stone-800">out</td>
+                  <td className="px-4 py-2">./src/bones</td>
+                  <td className="px-4 py-2">Output directory</td>
+                </tr>
+                <tr className="border-b border-stone-100">
+                  <td className="px-4 py-2 font-mono text-stone-800">breakpoints</td>
+                  <td className="px-4 py-2">[375, 768, 1280]</td>
+                  <td className="px-4 py-2">Viewport widths to capture</td>
+                </tr>
+                <tr className="border-b border-stone-100">
+                  <td className="px-4 py-2 font-mono text-stone-800">wait</td>
+                  <td className="px-4 py-2">800</td>
+                  <td className="px-4 py-2">ms to wait after page load</td>
+                </tr>
+                <tr className="border-b border-stone-100">
+                  <td className="px-4 py-2 font-mono text-stone-800">framework</td>
+                  <td className="px-4 py-2">auto</td>
+                  <td className="px-4 py-2">Registry import path (auto-detects vue/svelte/react)</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 font-mono text-stone-800">skipInitial</td>
+                  <td className="px-4 py-2">false</td>
+                  <td className="px-4 py-2">Skip capture on server start</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4 space-y-2">

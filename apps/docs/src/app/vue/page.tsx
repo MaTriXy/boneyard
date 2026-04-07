@@ -52,7 +52,8 @@ export default function VuePage() {
             <p className="text-[13px] font-medium text-stone-500 mb-2">3. Generate bones</p>
             <CodeBlock language="bash" code="npx boneyard-js build" />
             <p className="text-[13px] text-stone-400 mt-2">
-              Auto-detects your Vite/Nuxt dev server and captures all named skeletons.
+              Or use the <a href="/features#vite-plugin" className="text-stone-700 underline underline-offset-2">Vite plugin</a> — add <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyardPlugin()</code> to
+              your vite.config.ts and bones capture automatically. No second terminal.
             </p>
           </div>
           <div>
