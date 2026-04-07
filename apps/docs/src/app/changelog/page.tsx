@@ -8,12 +8,31 @@ export default function ChangelogPage() {
         </p>
       </div>
 
+      {/* v1.6.6 */}
+      <section>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[14px] font-bold">v1.6.6</span>
+          <span className="text-[12px] text-stone-400">April 2026</span>
+          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Nuxt &amp; Remix route scanning</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Filesystem route discovery now supports Nuxt (<code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">pages/**/*.vue</code>)
+              and Remix / React Router v7 (<code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">app/routes/</code> flat routes),
+              in addition to Next.js and SvelteKit.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* v1.6.5 */}
       <section>
         <div className="flex items-center gap-3 mb-4">
           <span className="text-[14px] font-bold">v1.6.5</span>
           <span className="text-[12px] text-stone-400">April 2026</span>
-          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
         </div>
 
         <div className="space-y-6">
