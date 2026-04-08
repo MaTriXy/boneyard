@@ -48,6 +48,7 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
   let browser: any = null
   let page: any = null
   let initialCaptureDone = false
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
   function detectOutDir(root: string): string {
     if (outDir) return resolve(root, outDir)
@@ -127,7 +128,7 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
 
         for (const [name, result] of Object.entries(bones)) {
           if (!result) continue
-          const safeName = name.replace(/[^a-zA-Z0-9._-]/g, '_')
+          const safeName = name.replace(/[^a-zA-Z0-9_-]/g, '_')
           if (!collected[safeName]) collected[safeName] = { breakpoints: {} }
 
           // Compact bones
@@ -203,6 +204,15 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
     configureServer(srv) {
       server = srv
 
+      // Clean up browser when dev server closes
+      srv.httpServer?.on('close', async () => {
+        if (browser) {
+          await browser.close()
+          browser = null
+          page = null
+        }
+      })
+
       if (!skipInitial) {
         srv.httpServer?.once('listening', () => {
           const address = srv.httpServer?.address()
@@ -226,18 +236,12 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
       if (!address || typeof address === 'string') return
       const url = `http://localhost:${address.port}`
 
-      // Debounce — wait for HMR to settle
-      setTimeout(() => {
+      // Debounce — cancel previous timer, wait for HMR to settle
+      if (debounceTimer) clearTimeout(debounceTimer)
+      debounceTimer = setTimeout(() => {
+        debounceTimer = null
         capture(url, srv.config.root)
       }, 1500)
-    },
-
-    async buildEnd() {
-      if (browser) {
-        await browser.close()
-        browser = null
-        page = null
-      }
     },
   }
 }
