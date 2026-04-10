@@ -15,6 +15,8 @@
  *   --out <dir>          Where to write .bones.json files (default: auto-detected)
  *   --breakpoints <bp>   Viewport widths to capture, comma-separated (default: 375,768,1280)
  *   --wait <ms>          Extra ms to wait after page load (default: 800)
+ *   --cookie <n=v>       Pass auth cookie (repeatable). e.g. --cookie "session=abc123"
+ *   --no-scan            Skip filesystem route scanning (only crawl links)
  *
  * Requires playwright:
  *   npm install -D playwright && npx playwright install chromium
@@ -114,6 +116,18 @@ for (let i = 1; i < args.length; i++) {
       console.error('  boneyard: --cdp requires a valid port number (e.g. --cdp 9222)')
       process.exit(1)
     }
+  } else if (args[i] === '--cookie') {
+    // --cookie "name=value" — shorthand for auth.cookies config
+    const cookieStr = args[++i]
+    if (!cookieStr || !cookieStr.includes('=')) {
+      console.error('  boneyard: --cookie requires name=value format (e.g. --cookie "session=abc123")')
+      process.exit(1)
+    }
+    const eqIdx = cookieStr.indexOf('=')
+    const cliCookieName = cookieStr.slice(0, eqIdx)
+    const cliCookieValue = cookieStr.slice(eqIdx + 1)
+    if (!config._cliCookies) config._cliCookies = []
+    config._cliCookies.push({ name: cliCookieName, value: cliCookieValue })
   } else if (!args[i].startsWith('--')) {
     urls.push(args[i])
   }
@@ -389,7 +403,21 @@ if (cdpPort) {
 }
 const page = cdpContext ? await cdpContext.newPage() : await browser.newPage()
 
-// Apply auth if configured
+// Apply auth if configured (config file or --cookie CLI flag)
+if (config._cliCookies?.length) {
+  // Merge CLI --cookie flags into config.auth.cookies
+  config.auth ??= {}
+  config.auth.cookies ??= []
+  const origin = new URL(urls[0] || `http://localhost:${port || 3000}`)
+  for (const c of config._cliCookies) {
+    config.auth.cookies.push({
+      name: c.name,
+      value: c.value,
+      domain: origin.hostname,
+      path: '/',
+    })
+  }
+}
 if (config.auth) {
   if (config.auth.cookies?.length) {
     console.log(`  \x1b[2mApplying ${config.auth.cookies.length} cookie(s) to browser session\x1b[0m`)
@@ -444,12 +472,15 @@ async function gotoPage(page, pageUrl) {
   const finalUrl = page.url()
   const requestedPath = new URL(pageUrl).pathname
   const finalPath = new URL(finalUrl).pathname
-  if (finalPath !== requestedPath) {
+  const wasRedirected = finalPath !== requestedPath
+  if (wasRedirected) {
     console.log(`    \x1b[33m⚠  Redirected: ${requestedPath} → ${finalPath}\x1b[0m`)
   }
 
   const effectiveWait = (typeof guidedWaitOverrides === 'object' && guidedWaitOverrides !== null && guidedWaitOverrides[pageUrl]) || waitMs
   if (effectiveWait > 0) await page.waitForTimeout(effectiveWait)
+
+  return { redirected: wasRedirected }
 }
 
 const skippedSkeletons = new Set()
@@ -473,7 +504,10 @@ async function capturePage(pageUrl) {
   for (const width of breakpoints) {
     await page.setViewportSize({ width, height: 900 })
 
-    await gotoPage(page, pageUrl)
+    const { redirected } = await gotoPage(page, pageUrl)
+
+    // Skip remaining breakpoints if page redirected (auth wall, etc.)
+    if (redirected) break
 
     // Find [data-boneyard] elements and extract bones using the real snapshotBones function
     const bones = await page.evaluate((collectHashes) => {
