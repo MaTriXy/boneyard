@@ -40,7 +40,7 @@ let globalConfig: BoneyardConfig = {}
  *
  * configureBoneyard({
  *   color: '#e5e5e5',
- *   darkColor: 'rgba(255,255,255,0.08)',
+ *   darkColor: '#2a2a2a',
  *   animate: true,
  * })
  * ```
@@ -63,9 +63,9 @@ export interface SkeletonProps {
    * Pre-generated bones. Accepts a single `SkeletonResult` or a `ResponsiveBones` map.
    */
   initialBones?: SkeletonResult | ResponsiveBones
-  /** Bone color (default: 'rgba(0,0,0,0.08)', auto-detects dark mode) */
+  /** Bone fill color — any CSS color value (default: '#f0f0f0') */
   color?: string
-  /** Bone color for dark mode (default: 'rgba(255,255,255,0.06)'). Used when prefers-color-scheme is dark or a .dark ancestor exists. */
+  /** Bone fill color for dark mode (default: '#222222'). Used when a .dark ancestor exists. */
   darkColor?: string
   /** Animation style: 'pulse' (default), 'shimmer', 'solid', or boolean (true = pulse, false = solid) */
   animate?: AnimationStyle
@@ -123,7 +123,7 @@ export function Skeleton({
   const [containerHeight, setContainerHeight] = useState(0)
   const [isDark, setIsDark] = useState(false)
 
-  // Auto-detect dark mode (watches both prefers-color-scheme and .dark class)
+  // Auto-detect dark mode via .dark class on <html> or ancestor (not prefers-color-scheme)
   useEffect(() => {
     if (typeof window === 'undefined') return
     const checkDark = () => {
@@ -132,16 +132,9 @@ export function Skeleton({
       setIsDark(hasDarkClass)
     }
     checkDark()
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const mqHandler = () => checkDark()
-    mq.addEventListener('change', mqHandler)
-    // Watch for .dark class changes on <html>
     const mo = new MutationObserver(checkDark)
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => {
-      mq.removeEventListener('change', mqHandler)
-      mo.disconnect()
-    }
+    return () => { mo.disconnect() }
   }, [])
 
   const effectiveColor = color ?? globalConfig.color ?? DEFAULTS.web.light

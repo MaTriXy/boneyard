@@ -415,9 +415,9 @@ export interface SkeletonProps {
   children: ReactNode
   name?: string
   initialBones?: SkeletonResult | ResponsiveBones
-  /** Bone color (default: '#ebebeb'). Used when prefers-color-scheme is light. */
+  /** Bone fill color — any valid React Native color (default: '#f0f0f0') */
   color?: string
-  /** Bone color for dark mode (default: '#3a3a3c'). */
+  /** Bone fill color for dark mode (default: '#222222') */
   darkColor?: string
   /** Force dark/light mode. When omitted, uses system scheme. */
   dark?: boolean

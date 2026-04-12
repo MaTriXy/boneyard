@@ -46,7 +46,7 @@ let globalConfig: BoneyardConfig = {}
  *
  * configureBoneyard({
  *   color: '#e5e5e5',
- *   darkColor: 'rgba(255,255,255,0.08)',
+ *   darkColor: '#2a2a2a',
  *   animate: true,
  * })
  * ```
@@ -129,26 +129,18 @@ export function Skeleton({
   const [containerHeight, setContainerHeight] = useState(0)
   const [isDark, setIsDark] = useState(false)
 
-  // Auto-detect dark mode (watches both prefers-color-scheme and .dark class)
+  // Auto-detect dark mode via .dark class on <html> or ancestor (not prefers-color-scheme)
   useEffect(() => {
     if (typeof window === 'undefined') return
     const checkDark = () => {
-      const mq = window.matchMedia('(prefers-color-scheme: dark)')
       const hasDarkClass = document.documentElement.classList.contains('dark') ||
         !!containerRef.current?.closest('.dark')
       setIsDark(hasDarkClass)
     }
     checkDark()
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const mqHandler = () => checkDark()
-    mq.addEventListener('change', mqHandler)
-    // Watch for .dark class changes on <html>
     const mo = new MutationObserver(checkDark)
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => {
-      mq.removeEventListener('change', mqHandler)
-      mo.disconnect()
-    }
+    return () => { mo.disconnect() }
   }, [])
 
   const effectiveColor = color ?? globalConfig.color ?? DEFAULTS.web.light

@@ -172,20 +172,13 @@
 
     updateDark()
 
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const mqHandler = () => updateDark()
-    mq.addEventListener('change', mqHandler)
-
     const mutationObserver = new MutationObserver(updateDark)
     mutationObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class'],
     })
 
-    return () => {
-      mq.removeEventListener('change', mqHandler)
-      mutationObserver.disconnect()
-    }
+    return () => { mutationObserver.disconnect() }
   }
 </script>
 
