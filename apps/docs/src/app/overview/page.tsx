@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Skeleton } from "boneyard-js/react";
-import { snapshotBones } from "boneyard-js";
 import { BrowserMockup } from "@/components/browser-mockup";
 import { CopyIcon } from "@/components/ui/icons/copy";
 import { CheckIcon } from "@/components/ui/icons/check";
@@ -22,37 +22,36 @@ function useGitHubStars() {
   return stars;
 }
 
-// ── Dashboard mock UI used as fixture ────────────────────────────────────────
+// ── Dashboard mock UI — boneyard stats ──────────────────────────────────────
 function DashboardMock() {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 mb-1">
-        <div className="w-6 h-6 rounded-md bg-indigo-500 flex items-center justify-center text-white font-bold text-[9px]">A</div>
-        <span className="text-[12px] font-semibold text-stone-800">Acme Dashboard</span>
+      <div className="flex items-center gap-1 mb-1">
+        <Image src="/logo.png" alt="boneyard" width={80} height={20} className="h-[16px] w-auto" />
       </div>
       <div className="flex gap-1.5">
         <div className="flex-1 bg-emerald-50 border border-emerald-200 rounded-lg p-2">
-          <div className="text-[9px] text-emerald-600 font-medium">Revenue</div>
-          <div className="text-[13px] font-bold text-emerald-700">$12.3k</div>
+          <div className="text-[9px] text-emerald-600 font-medium">Downloads</div>
+          <div className="text-[13px] font-bold text-emerald-700">18.2k</div>
         </div>
         <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-2">
-          <div className="text-[9px] text-blue-600 font-medium">Users</div>
-          <div className="text-[13px] font-bold text-blue-700">1,204</div>
+          <div className="text-[9px] text-blue-600 font-medium">Stars</div>
+          <div className="text-[13px] font-bold text-blue-700">4,521</div>
         </div>
         <div className="flex-1 bg-amber-50 border border-amber-200 rounded-lg p-2">
-          <div className="text-[9px] text-amber-600 font-medium">Orders</div>
-          <div className="text-[13px] font-bold text-amber-700">342</div>
+          <div className="text-[9px] text-amber-600 font-medium">Bones</div>
+          <div className="text-[13px] font-bold text-amber-700">1.2M</div>
         </div>
       </div>
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-lg p-2">
         <div className="flex items-end gap-[2px] h-[36px]">
-          {[40, 65, 45, 80, 60, 90, 55, 75, 85, 70, 95, 60].map((h, i) => (
+          {[30, 45, 40, 55, 65, 60, 70, 85, 80, 90, 95, 88].map((h, i) => (
             <div key={i} className="flex-1 bg-indigo-400 rounded-t" style={{ height: `${h}%` }} />
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        {["Alice — $240 — Done", "Bob — $89 — Pending"].map((row, i) => (
+        {["v1.7.3 — 7 bones captured", "v1.7.2 — 12 routes scanned"].map((row, i) => (
           <div key={i} className="h-5 bg-stone-50 border border-stone-100 rounded flex items-center px-2 text-[9px] text-stone-500 truncate">{row}</div>
         ))}
       </div>
@@ -60,29 +59,27 @@ function DashboardMock() {
   );
 }
 
-// ── Simplified fixture for skeleton side (outer shapes only) ─────────────────
-function DashboardFixtureSimple() {
+// ── Fixture for build-time capture — uses <section> as leaf tag so boneyard
+//    captures each section as one atomic bone (no inner text/bars) ────────────
+function DashboardFixture() {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 mb-1">
-        <div className="w-6 h-6 rounded-md bg-indigo-500" />
-        <div className="h-4 w-24 rounded bg-stone-800" />
-      </div>
+      <section className="flex items-center gap-2 mb-1 rounded bg-stone-100" style={{ height: 24 }} />
       <div className="flex gap-1.5">
-        <div className="flex-1 h-12 rounded-lg bg-emerald-50 border border-emerald-200" />
-        <div className="flex-1 h-12 rounded-lg bg-blue-50 border border-blue-200" />
-        <div className="flex-1 h-12 rounded-lg bg-amber-50 border border-amber-200" />
+        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
+        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
+        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
       </div>
-      <div className="h-[52px] rounded-lg bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100" />
+      <section className="rounded-lg bg-stone-100" style={{ height: 52 }} />
       <div className="flex flex-col gap-1">
-        <div className="h-5 rounded bg-stone-50 border border-stone-100" />
-        <div className="h-5 rounded bg-stone-50 border border-stone-100" />
+        <section className="h-5 rounded bg-stone-100" />
+        <section className="h-5 rounded bg-stone-100" />
       </div>
     </div>
   );
 }
 
-// ── Live side-by-side demo using real <Skeleton> ─────────────────────────────
+// ── Live side-by-side demo ─────────────────────────────────────────────────
 function StaticHeroDemo() {
   return (
     <BrowserMockup url="localhost:3000">
@@ -93,16 +90,19 @@ function StaticHeroDemo() {
           <DashboardMock />
         </div>
 
-        {/* Skeleton column — outer shapes only */}
+        {/* Skeleton column — outer shapes only via leafTags */}
         <div>
           <div className="text-[10px] font-medium text-stone-400 uppercase tracking-wide mb-2">Skeleton</div>
           <Skeleton
             name="overview-dashboard"
             loading={true}
+            animate="shimmer"
+            stagger={40}
             color="rgba(0,0,0,0.08)"
-            fixture={<DashboardFixtureSimple />}
+            fixture={<DashboardFixture />}
+            snapshotConfig={{ leafTags: ["section"] }}
           >
-            <DashboardFixtureSimple />
+            <DashboardMock />
           </Skeleton>
         </div>
       </div>
