@@ -40,7 +40,7 @@
 .shimmer-text {
   background: linear-gradient(90deg, #a8a29e 25%, #78716c 50%, #a8a29e 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
+  animation: shimmer 1.8s ease-in-out infinite reverse;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

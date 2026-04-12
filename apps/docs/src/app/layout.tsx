@@ -39,10 +39,10 @@ export default function RootLayout({
           <span className="text-stone-500">&rarr;</span>
         </a>
         {/* Centered container for sidebar + content */}
-        <div className="mx-auto max-w-[1320px] flex h-screen px-3">
+        <div className="mx-auto max-w-[1000px] flex h-screen px-3">
           <Sidebar />
           <main className="flex-1 min-w-0 pt-4 md:pt-15 overflow-y-auto overflow-x-hidden flex flex-col">
-            <div className="flex flex-1">{children}</div>
+            <div className="flex-1">{children}</div>
             <footer className="w-full max-w-[720px] px-6 pb-8 pt-12">
               <div className="border-t border-stone-200 pt-6 flex items-center justify-between text-[12px] text-[#a8a29e]">
                 <span>boneyard</span>

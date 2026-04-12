@@ -41,7 +41,7 @@ export function TableOfContents({ items }: TocProps) {
   if (items.length === 0) return null;
 
   return (
-    <nav className="hidden xl:block fixed right-[max(1rem,calc((100vw-1320px)/2+1rem))] top-28 w-[180px] max-h-[calc(100vh-140px)] overflow-y-auto">
+    <nav className="hidden min-[1180px]:block fixed top-28 w-[140px] max-h-[calc(100vh-140px)] overflow-y-auto" style={{ left: "calc(50vw + 444px)" }}>
       <p className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider mb-3">
         On this page
       </p>

@@ -23,57 +23,40 @@ function useGitHubStars() {
 }
 
 // ── Dashboard mock UI — boneyard stats ──────────────────────────────────────
+// Uses <article> for elements that should be captured as single atomic bones.
+// The Skeleton's snapshotConfig uses leafTags: ["article"] so boneyard treats
+// each <article> as one flat bone — no inner text/bars leak through.
 function DashboardMock() {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-1 mb-1">
+      <div className="flex items-center gap-1 mb-1" data-no-skeleton>
         <Image src="/logo.png" alt="boneyard" width={80} height={20} className="h-[16px] w-auto" />
       </div>
       <div className="flex gap-1.5">
-        <div className="flex-1 bg-emerald-50 border border-emerald-200 rounded-lg p-2">
+        <article className="flex-1 bg-emerald-50 border border-emerald-200 rounded-lg p-2">
           <div className="text-[9px] text-emerald-600 font-medium">Downloads</div>
           <div className="text-[13px] font-bold text-emerald-700">18.2k</div>
-        </div>
-        <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-2">
+        </article>
+        <article className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-2">
           <div className="text-[9px] text-blue-600 font-medium">Stars</div>
           <div className="text-[13px] font-bold text-blue-700">4,521</div>
-        </div>
-        <div className="flex-1 bg-amber-50 border border-amber-200 rounded-lg p-2">
+        </article>
+        <article className="flex-1 bg-amber-50 border border-amber-200 rounded-lg p-2">
           <div className="text-[9px] text-amber-600 font-medium">Bones</div>
           <div className="text-[13px] font-bold text-amber-700">1.2M</div>
-        </div>
+        </article>
       </div>
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-lg p-2">
+      <article className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-lg p-2">
         <div className="flex items-end gap-[2px] h-[36px]">
           {[30, 45, 40, 55, 65, 60, 70, 85, 80, 90, 95, 88].map((h, i) => (
             <div key={i} className="flex-1 bg-indigo-400 rounded-t" style={{ height: `${h}%` }} />
           ))}
         </div>
-      </div>
+      </article>
       <div className="flex flex-col gap-1">
         {["v1.7.3 — 7 bones captured", "v1.7.2 — 12 routes scanned"].map((row, i) => (
-          <div key={i} className="h-5 bg-stone-50 border border-stone-100 rounded flex items-center px-2 text-[9px] text-stone-500 truncate">{row}</div>
+          <article key={i} className="h-5 bg-stone-50 border border-stone-100 rounded flex items-center px-2 text-[9px] text-stone-500 truncate">{row}</article>
         ))}
-      </div>
-    </div>
-  );
-}
-
-// ── Fixture for build-time capture — uses <section> as leaf tag so boneyard
-//    captures each section as one atomic bone (no inner text/bars) ────────────
-function DashboardFixture() {
-  return (
-    <div className="flex flex-col gap-2">
-      <section className="flex items-center gap-2 mb-1 rounded bg-stone-100" style={{ height: 24 }} />
-      <div className="flex gap-1.5">
-        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
-        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
-        <section className="flex-1 rounded-lg bg-stone-100" style={{ height: 46 }} />
-      </div>
-      <section className="rounded-lg bg-stone-100" style={{ height: 52 }} />
-      <div className="flex flex-col gap-1">
-        <section className="h-5 rounded bg-stone-100" />
-        <section className="h-5 rounded bg-stone-100" />
       </div>
     </div>
   );
@@ -99,8 +82,7 @@ function StaticHeroDemo() {
             animate="shimmer"
             stagger={40}
             color="rgba(0,0,0,0.08)"
-            fixture={<DashboardFixture />}
-            snapshotConfig={{ leafTags: ["section"] }}
+            snapshotConfig={{ leafTags: ["article"], excludeSelectors: ["[data-no-skeleton]"] }}
           >
             <DashboardMock />
           </Skeleton>

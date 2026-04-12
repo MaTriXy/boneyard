@@ -75,7 +75,7 @@ export function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="pt-12 md:pt-30 pb-8">
+      <div className="pt-12 md:pt-[122px] pb-8">
         <Link href="/overview">
           <Logo />
         </Link>
