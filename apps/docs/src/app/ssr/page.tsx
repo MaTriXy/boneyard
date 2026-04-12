@@ -174,7 +174,7 @@ export default function SSRPage() {
                 <NotificationList />
               </BrowserMockup>
               <BrowserMockup url="SSR skeleton">
-                <SkeletonPreview>
+                <SkeletonPreview name="ssr-notifications">
                   <NotificationList />
                 </SkeletonPreview>
               </BrowserMockup>
@@ -189,7 +189,7 @@ export default function SSRPage() {
                 <StatsRow />
               </BrowserMockup>
               <BrowserMockup url="SSR skeleton">
-                <SkeletonPreview>
+                <SkeletonPreview name="ssr-stats">
                   <StatsRow />
                 </SkeletonPreview>
               </BrowserMockup>
@@ -204,7 +204,7 @@ export default function SSRPage() {
                 <PostCard />
               </BrowserMockup>
               <BrowserMockup url="SSR skeleton">
-                <SkeletonPreview>
+                <SkeletonPreview name="ssr-post">
                   <PostCard />
                 </SkeletonPreview>
               </BrowserMockup>

@@ -138,7 +138,7 @@ export default function ResponsivePage() {
               </div>
               <div style={width ? { maxWidth: width } : undefined}>
                 <BrowserMockup url="skeleton">
-                  <SkeletonPreview>
+                  <SkeletonPreview name={`responsive-${tag}`}>
                     <ProductCard layout={layout} />
                   </SkeletonPreview>
                 </BrowserMockup>
