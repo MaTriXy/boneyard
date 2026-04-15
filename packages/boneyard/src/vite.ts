@@ -19,6 +19,7 @@ import { resolve, join } from 'path'
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs'
 import { createHash } from 'crypto'
 import type { Plugin, ViteDevServer } from 'vite'
+import { detectRegistryExtension } from '../bin/registry-file.js'
 
 export interface BoneyardPluginOptions {
   /** Output directory for .bones.json files (default: './src/bones' or './bones') */
@@ -103,6 +104,7 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
 
       const outputDir = detectOutDir(root)
       const fw = detectFramework(root)
+      const registryFilename = `registry.${detectRegistryExtension(root)}`
       const collected: Record<string, any> = {}
 
       const pageUrls = routes.map(route => {
@@ -206,7 +208,7 @@ export function boneyardPlugin(options: BoneyardPluginOptions = {}): Plugin {
       registryLines.push('})')
       registryLines.push('')
 
-      writeFileSync(join(outputDir, 'registry.js'), registryLines.join('\n'))
+      writeFileSync(join(outputDir, registryFilename), registryLines.join('\n'))
 
       const ts = new Date().toLocaleTimeString()
       console.log(`  \x1b[35m[boneyard]\x1b[0m ${ts} — ${names.length} skeleton${names.length !== 1 ? 's' : ''} captured`)
