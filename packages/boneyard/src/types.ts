@@ -69,13 +69,13 @@ export type CompactBone = [number, number, number, number, number | string] | [n
  *
  * - `Bone`: structured object form.
  * - `CompactBone`: hand-authored 5/6-element tuple.
- * - `(number | string)[]`: what TypeScript infers for tuples loaded from
- *   `*.bones.json` imports under `resolveJsonModule: true`. Tuple types are
- *   narrowed to arrays on serialization, so the registry can't assume the
- *   compact form at type level — `normalizeBone` validates the length at
- *   runtime.
+ * - `(number | string | boolean)[]`: what TypeScript infers for tuples loaded
+ *   from `*.bones.json` imports under `resolveJsonModule: true`. Tuple types
+ *   are narrowed to arrays on serialization; container bones emit a trailing
+ *   `true` so the union must cover booleans too. `normalizeBone` validates
+ *   the length at runtime.
  */
-export type AnyBone = Bone | CompactBone | (number | string)[]
+export type AnyBone = Bone | CompactBone | (number | string | boolean)[]
 
 /** Normalize a bone from either format to the object format */
 export function normalizeBone(b: AnyBone): Bone {
