@@ -34,8 +34,8 @@ export default function RootLayout({
         <BoneRegistryInit />
         {/* Version banner */}
         <a href="/changelog" className="hidden md:flex items-center justify-center gap-1.5 w-full bg-stone-900 py-2 px-4 text-[12px] text-stone-300 hover:text-white transition-colors fixed top-0 left-0 right-0 z-50">
-          <span className="font-medium text-emerald-400">v1.7.8</span>
-          CLI: --version flag, Windows route-path fix, explicit routes config
+          <span className="font-medium text-emerald-400">v1.7.9</span>
+          Typed JSON bone imports, --cdp reuses Chrome session, test suite green
           <span className="text-stone-500">&rarr;</span>
         </a>
         {/* Centered container for sidebar + content */}

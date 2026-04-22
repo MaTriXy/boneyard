@@ -8,12 +8,43 @@ export default function ChangelogPage() {
         </p>
       </div>
 
+      {/* v1.7.9 */}
+      <section>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[14px] font-bold">v1.7.9</span>
+          <span className="text-[12px] text-stone-400">April 2026</span>
+          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Type-safe JSON bone imports</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Consumer projects with <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">resolveJsonModule: true</code> (the default in most Vite / Next.js setups) were hitting <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">TS2322</code> on every <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">import _x from &apos;./x.bones.json&apos;</code> inside the auto-generated <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">registry.ts</code>. TypeScript infers JSON arrays as <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">number[]</code>, not the tuple <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">CompactBone</code> describes. Widened <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">AnyBone</code> to accept the JSON-inferred shape and loosened <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">SkeletonResult.bones</code> from <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">Bone[]</code> to <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">AnyBone[]</code>. Runtime is unchanged — <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">normalizeBone</code> still validates tuple length. Fixes <a href="https://github.com/0xGF/boneyard/issues/72" className="underline">#72</a> via <a href="https://github.com/0xGF/boneyard/pull/74" className="underline">#74</a>.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1"><code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">--cdp</code> now actually reuses your Chrome session</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              The CLI help promised <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">--cdp</code> &quot;reuses cookies, auth, state&quot;, but after <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">chromium.connectOverCDP()</code> the CLI called <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">browser.newContext()</code>, which spawned a fresh context that didn&apos;t inherit any session state. Every authed route 302&apos;d to sign-in and skeleton capture returned <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">No skeletons found</code>. Now reuses the existing context when Chrome has one, falling back to <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">newContext()</code> only when there are no tabs. Authed pages behind Clerk / NextAuth / cookie sessions capture correctly again. Fixed via <a href="https://github.com/0xGF/boneyard/pull/73" className="underline">#73</a>.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Test suite back to green</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Two <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">renderBones</code> tests and their Vue equivalents were asserting that container bones (<code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">c: true</code>) rendered with a lightened color, but the runtime has intentionally skipped them since v1.6 to avoid opacity overlap with child bones. Rewrote those tests to positively assert the skip, and removed the stray <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">true</code> flag from compact-tuple fixtures that weren&apos;t testing container behavior. Suite is now 123 pass / 0 fail.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* v1.7.8 */}
       <section>
         <div className="flex items-center gap-3 mb-4">
           <span className="text-[14px] font-bold">v1.7.8</span>
           <span className="text-[12px] text-stone-400">April 2026</span>
-          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
         </div>
 
         <div className="space-y-6">
