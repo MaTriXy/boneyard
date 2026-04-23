@@ -28,6 +28,7 @@ import { fileURLToPath } from 'url'
 import http from 'http'
 import https from 'https'
 import { detectRegistryExtension } from './registry-file.js'
+import { isSinglePageMode } from './url-helpers.js'
 
 // Read our own version from the package.json that ships with this CLI.
 // `boneyard-js` may be installed anywhere — walk from this file rather than cwd.
@@ -827,9 +828,22 @@ function discoverRoutes(origin) {
 const startUrl = urls[0]
 const startOrigin = new URL(startUrl).origin
 
+// Single-page mode: when the user explicitly passed at least one URL with
+// a non-root path (e.g. `npx boneyard-js build http://localhost:3000/dashboard`)
+// the docs promise "Specific page" capture (apps/docs/src/app/cli/page.tsx).
+// Honour that promise — skip link-following, skip filesystem route discovery,
+// skip config.routes/skeletons augmentation. The given URLs ARE the queue.
+// Bare-origin URLs and the auto-detect path keep the legacy crawl behaviour.
+const singlePageMode = isSinglePageMode(urls)
+
 // Per-skeleton guided crawling: skip route discovery and go directly to specified routes
 const skeletonsConfig = config.skeletons
-if (skeletonsConfig && typeof skeletonsConfig === 'object' && Object.keys(skeletonsConfig).length > 0) {
+if (singlePageMode) {
+  const label = urls.length === 1 ? 'page' : 'pages'
+  console.log(`  \x1b[2mSpecific ${label}: ${urls.length} URL(s) — no link/filesystem crawl\x1b[0m\n`)
+  // toVisit was initialized with [...urls] above — that's already the full
+  // queue. Nothing else to add.
+} else if (skeletonsConfig && typeof skeletonsConfig === 'object' && Object.keys(skeletonsConfig).length > 0) {
   const entries = Object.entries(skeletonsConfig)
   console.log(`  \x1b[2mGuided crawl: ${entries.length} skeleton(s) configured\x1b[0m\n`)
   const guidedRoutes = new Set()
@@ -1127,6 +1141,9 @@ if (watchMode && !nativeMode) {
       for (const watchUrl of [...toVisit]) {
         if (visited.has(watchUrl)) continue
         visited.add(watchUrl)
+        // In single-page mode the explicit URLs are the entire queue —
+        // do not follow links out of them.
+        if (singlePageMode) continue
         const links = await discoverLinks(watchUrl)
         for (const link of links) {
           if (!visited.has(link) && !toVisit.includes(link)) toVisit.push(link)
