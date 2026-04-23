@@ -8,12 +8,50 @@ export default function ChangelogPage() {
         </p>
       </div>
 
+      {/* v1.8.0 */}
+      <section>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-[14px] font-bold">v1.8.0</span>
+          <span className="text-[12px] text-stone-400">April 2026</span>
+          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Vite plugin no longer fails silently</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Three places in the Vite plugin used to swallow errors silently — <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">page.goto</code> failures, empty captures, and most exceptions in the outer catch — leaving users staring at <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">[boneyard] watching for skeleton changes...</code> with no way to diagnose. The plugin now prints a per-route rundown when capture returns nothing (final path so redirects are visible, page title, <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">data-boneyard</code> marker count, any <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">page.goto</code> error). Redirects log at the first breakpoint as they happen. The outer catch logs all real failures; only the benign &quot;Target closed&quot; (dev-server restart) stays quiet. New <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">debug: true</code> plugin option turns on verbose per-step logging. Fixes <a href="https://github.com/0xGF/boneyard/issues/75" className="underline">#75</a> via <a href="https://github.com/0xGF/boneyard/pull/77" className="underline">#77</a>.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Vite plugin reads <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">boneyard.config.json</code> (incl. <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">auth</code>)</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">routes</code>, <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">breakpoints</code>, <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">wait</code>, <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">out</code>, and <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">auth</code> (cookies + headers, sanitized against the same allowlist/blocklist the CLI uses) are now honoured by the plugin as fallbacks. Plugin options still win when both are set. Authed pages behind cookie sessions can be captured in watch mode without a second terminal.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1">Vite plugin <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">cdp</code> reuses your Chrome session</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              Same fix as <a href="https://github.com/0xGF/boneyard/pull/73" className="underline">#73</a> in the CLI, ported to the plugin. <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">browser.contexts()[0] ?? browser.newContext()</code> — inherits cookies/auth from the Chrome window you point it at instead of spawning a fresh empty context.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-[14px] font-semibold mb-1"><code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">npx boneyard-js build {'<url>'}/path</code> now actually captures only that page</h3>
+            <p className="text-[13px] text-[#78716c] leading-relaxed">
+              The CLI documents <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">npx boneyard-js build http://localhost:3000/dashboard</code> as the way to capture a &quot;Specific page&quot;, but the implementation treated every URL as a starting point — link-following from the page, walking <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">app/**/page.tsx</code> for additional routes, adding anything in <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">config.routes</code>. So passing <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">/dashboard/analytics</code> still scanned the whole project. Now: when any URL has a non-root path, the CLI prints <code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">Specific page: 1 URL(s) — no link/filesystem crawl</code> and visits exactly the URL(s) you passed. Bare-origin URLs (<code className="text-[12px] bg-stone-100 px-1 py-0.5 rounded">http://localhost:3000</code>) and the auto-detect path keep crawling everything. Fixes <a href="https://github.com/0xGF/boneyard/issues/78" className="underline">#78</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* v1.7.9 */}
       <section>
         <div className="flex items-center gap-3 mb-4">
           <span className="text-[14px] font-bold">v1.7.9</span>
           <span className="text-[12px] text-stone-400">April 2026</span>
-          <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">latest</span>
         </div>
 
         <div className="space-y-6">
