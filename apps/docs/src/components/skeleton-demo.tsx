@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import type { SkeletonResult } from "boneyard-js";
-import { snapshotBones } from "boneyard-js";
+import type { SkeletonResult, AnyBone } from "boneyard-js";
+import { snapshotBones, normalizeBone } from "boneyard-js";
 import { BrowserMockup } from "@/components/browser-mockup";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorPicker } from "@/components/ui/color-picker";
@@ -312,7 +312,7 @@ function getTextureStyle(texture: Texture, color: string, isDark = false): { cla
 function SkeletonRenderer({
   bones, height, color, texture, dark = false, stagger = 0,
 }: {
-  bones: { x: number; y: number; w: number; h: number; r: number | string; c?: boolean }[];
+  bones: AnyBone[];
   height: number;
   color: string;
   texture: Texture;
@@ -322,7 +322,8 @@ function SkeletonRenderer({
   const uid = useRef(Math.random().toString(36).slice(2, 8)).current;
   return (
     <div className="relative w-full" style={{ height }}>
-      {bones.map((b, i) => {
+      {bones.map((raw, i) => {
+        const b = normalizeBone(raw);
         const r = typeof b.r === "string" ? b.r : `${b.r}px`;
         const boneColor = b.c ? lightenHex(color, dark ? 0.03 : 0.45) : color;
         const { className, style: textureStyle } = getTextureStyle(texture, boneColor, dark);

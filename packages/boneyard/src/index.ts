@@ -4,6 +4,7 @@ import { renderBones } from './runtime.js'
 import type { SkeletonDescriptor } from './types.js'
 
 export type { Bone, CompactBone, AnyBone, SkeletonResult, ResponsiveBones, SkeletonDescriptor, ResponsiveDescriptor, SnapshotConfig } from './types.js'
+export { normalizeBone } from './types.js'
 export { registerBones } from './shared.js'
 export type { CompiledSkeletonDescriptor } from './layout.js'
 
